@@ -1,8 +1,19 @@
+" Syntax highlighting
 syntax on
+
+" Tell Vim what the background color looks like
 set background=dark
+
+" Show the line # on the bar
 set ruler
+
+" Use spaces instead of tab characters
 set noexpandtab
+
+" Automatically use one extra level of indentation
 set smartindent
+
+
 set tabstop=4
 set shiftwidth=4
 set expandtab
@@ -10,9 +21,7 @@ set number
 set cul
 hi CursorLine term=none cterm =none ctermbg=3
 set history=100
-colorscheme desert
-let g:neocomplcache_enable_at_startup = 1 
-let g:neocomplcache_enable_insert_char_pre = 1 "No pop-up when scrolling
+colorscheme elflord
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 set colorcolumn=80
@@ -31,3 +40,4 @@ inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 set wrap
 set linebreak
 set nolist
+nnoremap ; :
