@@ -13,7 +13,6 @@ set noexpandtab
 " Automatically use one extra level of indentation
 set smartindent
 
-
 set tabstop=4
 set shiftwidth=4
 set expandtab
@@ -40,4 +39,30 @@ inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 set wrap
 set linebreak
 set nolist
+
+" Remap semicolon to colon (don't need to hold shift anymore)
 nnoremap ; :
+
+" The ESC key is a bit far. Type two j's rapidly to exit INSERT
+inoremap jj <ESC>
+
+" Don't bother redrawing in the middle of macros
+set lazyredraw
+
+" Autocompletion
+set wildmenu
+
+" Search as characters are intered
+set incsearch
+
+" Highlight matches
+set hlsearch
+
+set showcmd
+
+" Remove trailing whitespace from filetypes given
+autocmd FileType c,cpp,java,php autocmd BufWritePre <buffer> :%s/\s\+$//e
+
+" Highlight extra whitespace
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
