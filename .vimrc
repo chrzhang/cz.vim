@@ -19,7 +19,13 @@ set expandtab
 set number
 set cul
 hi CursorLine term=none cterm =none ctermbg=3
-set history=100
+
+" Remember more cmds, search history, etc.
+set history=1000
+
+" More undoing
+set undolevels=1000
+
 colorscheme elflord
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
@@ -64,5 +70,30 @@ set showcmd
 autocmd FileType c,cpp,java,php autocmd BufWritePre <buffer> :%s/\s\+$//e
 
 " Highlight extra whitespace
-highlight ExtraWhitespace ctermbg=red guibg=red
+highlight ExtraWhitespace ctermbg=LightGray guibg=LightGray
 match ExtraWhitespace /\s\+$/
+
+" Space opens/closes folds
+nnoremap <space> za
+
+" Fold based on indents so headers are still highlighted
+set foldmethod=indent
+
+" Don't fold comments
+let c_no_comment_fold = 1
+
+" Fold only top level
+set foldnestmax=1
+
+" Instead of beeping on error, flash
+set visualbell
+
+" Don't wrap
+set nowrap
+
+" Show matching parenthesis
+set showmatch
+
+" Persistent undo after closing a file
+set undofile
+set undodir=/import/linux/home/czhang44/vimundo
