@@ -51,6 +51,7 @@ nnoremap ; :
 
 " The ESC key is a bit far. Type two j's rapidly to exit INSERT
 inoremap jj <ESC>
+inoremap JJ <ESC>
 
 " Don't bother redrawing in the middle of macros
 set lazyredraw
@@ -96,4 +97,9 @@ set showmatch
 
 " Persistent undo after closing a file
 set undofile
-set undodir=/import/linux/home/czhang44/vimundo
+set undodir=/vagrant/vimundo
+
+" Remember the cursor location between opening/closing the file
+if has("autocmd")
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
