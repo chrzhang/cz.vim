@@ -26,7 +26,7 @@ set history=1000
 " More undoing
 set undolevels=1000
 
-colorscheme elflord
+colorscheme delek
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 set colorcolumn=80
@@ -59,6 +59,10 @@ set lazyredraw
 " Autocompletion
 set wildmenu
 
+" Horizontal, unobstructive (and default to longest match as first)
+set wildmode=longest:full,full
+
+
 " Search as characters are intered
 set incsearch
 
@@ -67,8 +71,16 @@ set hlsearch
 
 set showcmd
 
+" Preserve cursor position after trimming trailing whitespace after save
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
 " Remove trailing whitespace from filetypes given
-autocmd FileType c,cpp,java,php autocmd BufWritePre <buffer> :%s/\s\+$//e
+autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 " Highlight extra whitespace
 highlight ExtraWhitespace ctermbg=LightGray guibg=LightGray
@@ -84,7 +96,7 @@ set foldmethod=indent
 let c_no_comment_fold = 1
 
 " Fold only top level
-set foldnestmax=1
+set foldnestmax=0
 
 " Instead of beeping on error, flash
 set visualbell
@@ -95,11 +107,15 @@ set nowrap
 " Show matching parenthesis
 set showmatch
 
-" Persistent undo after closing a file
 set undofile
-set undodir=/vagrant/vimundo
+set undodir=~/vimundo
 
 " Remember the cursor location between opening/closing the file
 if has("autocmd")
     au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
+
+" Smoother scroll
+map <C-U> <C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y>
+map <C-D> <C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E>
+
