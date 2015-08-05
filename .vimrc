@@ -32,7 +32,10 @@ match OverLength /\%81v.\+/
 set colorcolumn=80
 hi ColorColumn ctermbg=lightblue guibg=lightblue
 set ignorecase
+
+" Ignore case if search pattern is all lowercase
 set smartcase
+
 function InsertTabWrapper()
     let col = col('.') - 1
     if !col || getline('.')[col - 1]!~'\k'
@@ -52,6 +55,8 @@ nnoremap ; :
 " The ESC key is a bit far. Type two j's rapidly to exit INSERT
 inoremap jj <ESC>
 inoremap JJ <ESC>
+inoremap Jj <ESC>
+inoremap jJ <ESC>
 
 " Don't bother redrawing in the middle of macros
 set lazyredraw
@@ -100,6 +105,7 @@ set foldnestmax=0
 
 " Instead of beeping on error, flash
 set visualbell
+set noerrorbells
 
 " Don't wrap
 set nowrap
@@ -119,3 +125,24 @@ endif
 map <C-U> <C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y><C-Y>
 map <C-D> <C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E><C-E>
 
+" Quickly switch out of paste mode for non-staggered multi-line pastes
+set pastetoggle=<F10>
+
+" Allow backspacing over everything in INSERT mode
+set backspace=indent,eol,start
+
+" Set the title of the terminal to the current file
+set title
+
+" Don't clutter current workspace with swap files
+set swapfile
+set dir=~/swapfile
+
+" Move between windows open in vim more smoothly (just hold Ctrl then h,j,k,l)
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" Clear highlighted searches
+nmap <silent> ,/ :nohlsearch<CR>
