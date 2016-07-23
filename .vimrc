@@ -17,6 +17,7 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 set number
+set relativenumber
 set cul
 hi CursorLine term=none cterm =none ctermbg=3
 
@@ -26,7 +27,9 @@ set history=1000
 " More undoing
 set undolevels=1000
 
-colorscheme delek
+set t_Co=256
+colo devbox-dark-256
+
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 set colorcolumn=80
@@ -146,3 +149,9 @@ map <C-l> <C-w>l
 
 " Clear highlighted searches
 nmap <silent> ,/ :nohlsearch<CR>
+
+" Highlight column of current cursor location
+set cuc
+
+" Start scrolling down before cursor reaches last line on screen
+set scrolloff=15
