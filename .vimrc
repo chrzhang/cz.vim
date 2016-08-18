@@ -1,10 +1,10 @@
 " Syntax highlighting
 syntax on
 
-" Tell Vim what the background color looks like
+" Better color map for syntax highlighting with black background
 set background=dark
 
-" Show the line # on the bar
+" Show the line and column # of cursor on the bar
 set ruler
 
 " Use spaces instead of tab characters
@@ -13,11 +13,28 @@ set noexpandtab
 " Automatically use one extra level of indentation
 set smartindent
 
+" A hard TAB is 4 columns
 set tabstop=4
+
+" Add / remove 4 spaces when hitting a TAB / BACKSPACE
+set softtabstop=4
+
+" >> and << will indent and unindent by 4 columns
 set shiftwidth=4
+
+" Round indent to multiple of shiftwidth
+set shiftround
+
+" Add spaces when TAB is hit
 set expandtab
+
+" Set line number of current line
 set number
+
+" Set line number of neighboring lines to be offset to current line
 set relativenumber
+
+" Highlight the line the cursor is on
 set cul
 hi CursorLine term=none cterm =none ctermbg=3
 
@@ -27,6 +44,7 @@ set history=1000
 " More undoing
 set undolevels=1000
 
+" Customize colors
 set t_Co=256
 colo devbox-dark-256
 
@@ -39,6 +57,7 @@ set ignorecase
 " Ignore case if search pattern is all lowercase
 set smartcase
 
+" Auto-complete on tab
 function InsertTabWrapper()
     let col = col('.') - 1
     if !col || getline('.')[col - 1]!~'\k'
@@ -48,8 +67,10 @@ function InsertTabWrapper()
     endif
 endfunction
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-set wrap
+
 set linebreak
+
+" Turn off markers for 'invisible' text markers
 set nolist
 
 " Remap semicolon to colon (don't need to hold shift anymore)
@@ -70,13 +91,13 @@ set wildmenu
 " Horizontal, unobstructive (and default to longest match as first)
 set wildmode=longest:full,full
 
-
 " Search as characters are intered
 set incsearch
 
 " Highlight matches
 set hlsearch
 
+" Show cmd in last line of screen
 set showcmd
 
 " Preserve cursor position after trimming trailing whitespace after save
@@ -88,23 +109,11 @@ fun! <SID>StripTrailingWhitespaces()
 endfun
 
 " Remove trailing whitespace from filetypes given
-autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd FileType c,cpp,java,php,ruby,py autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 " Highlight extra whitespace
 highlight ExtraWhitespace ctermbg=LightGray guibg=LightGray
 match ExtraWhitespace /\s\+$/
-
-" Space opens/closes folds
-nnoremap <space> za
-
-" Fold based on indents so headers are still highlighted
-set foldmethod=indent
-
-" Don't fold comments
-let c_no_comment_fold = 1
-
-" Fold only top level
-set foldnestmax=0
 
 " Instead of beeping on error, flash
 set visualbell
@@ -150,8 +159,6 @@ map <C-l> <C-w>l
 " Clear highlighted searches
 nmap <silent> ,/ :nohlsearch<CR>
 
-" Highlight column of current cursor location
 set cuc
 
-" Start scrolling down before cursor reaches last line on screen
 set scrolloff=15
