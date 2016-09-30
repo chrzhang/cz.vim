@@ -1,3 +1,5 @@
+execute pathogen#infect()
+
 " Syntax highlighting
 syntax on
 
@@ -82,6 +84,8 @@ inoremap JJ <ESC>
 inoremap Jj <ESC>
 inoremap jJ <ESC>
 
+inoremap :; ::
+
 " Don't bother redrawing in the middle of macros
 set lazyredraw
 
@@ -162,3 +166,11 @@ nmap <silent> ,/ :nohlsearch<CR>
 set cuc
 
 set scrolloff=15
+
+map <C-n> :NERDTreeToggle<CR>
+
+" So Nerdtree displays arrows in Putty (also see .profile settings)
+let g:NERDTreeDirArrows=0
+
+" So gitgutter draws gutter symbols faster
+set updatetime=20
