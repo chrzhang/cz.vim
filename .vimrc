@@ -79,10 +79,7 @@ set nolist
 nnoremap ; :
 
 " The ESC key is a bit far. Type two j's rapidly to exit INSERT
-inoremap jj <ESC>
-inoremap JJ <ESC>
-inoremap Jj <ESC>
-inoremap jJ <ESC>
+inoremap jk <ESC>
 
 inoremap :; ::
 
