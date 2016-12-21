@@ -78,7 +78,7 @@ set nolist
 " Remap semicolon to colon (don't need to hold shift anymore)
 nnoremap ; :
 
-" The ESC key is a bit far. Type two j's rapidly to exit INSERT
+" The ESC key is a bit far. Type jk rapidly to exit INSERT mode
 inoremap jk <ESC>
 
 inoremap :; ::
@@ -148,8 +148,7 @@ set backspace=indent,eol,start
 set title
 
 " Don't clutter current workspace with swap files
-set swapfile
-set dir=~/swapfile
+set noswapfile
 
 " Move between windows open in vim more smoothly (just hold Ctrl then h,j,k,l)
 map <C-h> <C-w>h
