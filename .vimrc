@@ -1,12 +1,10 @@
-set nocompatible
 " Syntax highlighting
 syntax on
 
-" Tell Vim what the background color looks like
+" Better color map for syntax highlighting with black background
 set background=dark
-set re=1
 
-" Show the line # on the bar
+" Show the line and column # of cursor on the bar
 set ruler
 
 " Use spaces instead of tab characters
@@ -15,30 +13,48 @@ set noexpandtab
 " Automatically use one extra level of indentation
 set smartindent
 
+" A hard TAB is 4 columns
 set tabstop=4
+
+" Add / remove 4 spaces when hitting a TAB / BACKSPACE
+set softtabstop=4
+
+" >> and << will indent and unindent by 4 columns
 set shiftwidth=4
+
+" Round indent to multiple of shiftwidth
+set shiftround
+
+" Add spaces when TAB is hit
 set expandtab
-set nu
-set cul " cursor line
-" set cuc " cursor column
-hi CursorLine term=none cterm =none ctermbg=5
-set cuc
 
-set scrolloff=5
-set sidescrolloff=1
-set sidescroll=1
+" Set line number of current line
+set number
 
-" Remember more commands, search history, etc.
+" Highlight the line the cursor is on
+set cul
+hi CursorLine term=none cterm =none ctermbg=3
+
+" Remember more cmds, search history, etc.
 set history=1000
 
 " More undoing
 set undolevels=1000
 
+" Customize colors
+set t_Co=256
+colo elflord
+
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%81v.\+/
+set colorcolumn=80
+hi ColorColumn ctermbg=lightblue guibg=lightblue
 set ignorecase
 
 " Ignore case if search pattern is all lowercase
 set smartcase
 
+" Auto-complete on tab
 function InsertTabWrapper()
     let col = col('.') - 1
     if !col || getline('.')[col - 1]!~'\k'
@@ -46,20 +62,24 @@ function InsertTabWrapper()
     else
         return "\<c-p>"
     endif
-
 endfunction
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+
 set linebreak
+
+" Turn off markers for 'invisible' text markers
 set nolist
-set nowrap
+
 " Remap semicolon to colon (don't need to hold shift anymore)
 nnoremap ; :
 
-" The ESC key is a bit far. Type two <j> rapidly to exit INSERT
+" The ESC key is a bit far. Type jk rapidly to exit INSERT mode
 inoremap jk <ESC>
-inoremap JK <ESC>
-inoremap Jk <ESC>
-inoremap jK <ESC>
+
+inoremap :; ::
+
+" Don't bother redrawing in the middle of macros
+set lazyredraw
 
 " Autocompletion
 set wildmenu
@@ -67,12 +87,13 @@ set wildmenu
 " Horizontal, unobstructive (and default to longest match as first)
 set wildmode=longest:full,full
 
-" Search as characters are entered
+" Search as characters are intered
 set incsearch
 
 " Highlight matches
 set hlsearch
 
+" Show cmd in last line of screen
 set showcmd
 
 " Preserve cursor position after trimming trailing whitespace after save
@@ -84,23 +105,24 @@ fun! <SID>StripTrailingWhitespaces()
 endfun
 
 " Remove trailing whitespace from filetypes given
-autocmd FileType c,cpp,java,php,ruby,json,sh,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces() 
+autocmd FileType c,cpp,java,php,ruby,py autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
-" Make PEP8 a little happier
-set softtabstop=4
-set autoindent
-set fileformat=unix
+" Highlight extra whitespace
+highlight ExtraWhitespace ctermbg=LightGray guibg=LightGray
+match ExtraWhitespace /\s\+$/
 
-set encoding=utf-8
+" Instead of beeping on error, flash
+set visualbell
+set noerrorbells
 
-" Space opens/closes folds
-nnoremap <space> za
-
-" Don't fold comments
-let c_no_comment_fold = 1
+" Don't wrap
+set nowrap
 
 " Show matching parenthesis
 set showmatch
+
+set undofile
+set undodir=~/vimundo
 
 " Remember the cursor location between opening/closing the file
 if has("autocmd")
@@ -120,113 +142,18 @@ set backspace=indent,eol,start
 " Set the title of the terminal to the current file
 set title
 
+" Don't clutter current workspace with swap files
+set noswapfile
+
 " Move between windows open in vim more smoothly (just hold Ctrl then h,j,k,l)
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-try
-    set undodir=~/vimundo
-    set undofile
-catch
-endtry
+" Clear highlighted searches
+nmap <silent> ,/ :nohlsearch<CR>
 
-set t_Co=256
+" set cuc
 
-colorscheme seoul256
-
-" Add meta include-guard
-nmap <F7> yyPwdwiifndef INCLUDED<Esc>lr_vw~wDjo#endif<Esc>o<Esc>
-
-set clipboard=unnamed
-
-let mapleader=","
-vnoremap <Leader>s :sort<CR>
-
-" Always show the name of the current file
-set statusline+=%f
-set laststatus=2
-
-" Re-map Enter and Shift-enter to add a blank line but don't go to Insert mode as do o and O
-nmap <S-Enter> O<Esc>
-nmap <CR> o<Esc>
-
-" No swap files
-set nobackup
-set nowb
-set noswapfile
-
-set autoread
-
-set nowrap
-
-nmap j gj
-nmap k gk
-
-set showbreak=>\  "have soft-wrap prefix
-
-set colorcolumn=79
-
-" Search over visual ranges
-function! RangeSearch(direction)
-  call inputsave()
-  let g:srchstr = input(a:direction)
-  call inputrestore()
-  if strlen(g:srchstr) > 0
-    let g:srchstr = g:srchstr.
-          \ '\%>'.(line("'<")-1).'l'.
-          \ '\%<'.(line("'>")+1).'l'
-  else
-    let g:srchstr = ''
-  endif
-endfunction
-vnoremap <silent> / :<C-U>call RangeSearch('/')<CR>:if strlen(g:srchstr) > 0\|exec '/'.g:srchstr\|endif<CR>
-vnoremap <silent> ? :<C-U>call RangeSearch('?')<CR>:if strlen(g:srchstr) > 0\|exec '?'.g:srchstr\|endif<CR>
-
-" Highlight a column in csv text.
-" :Csv 1    " highlight first column
-" :Csv 12   " highlight twelfth column
-" :Csv 0    " switch off highlight
-function! CSVH(colnr)
-  if a:colnr > 1
-    let n = a:colnr - 1
-    execute 'match Keyword /^\([^,]*,\)\{'.n.'}\zs[^,]*/'
-    execute 'normal! 0'.n.'f,'
-  elseif a:colnr == 1
-    match Keyword /^[^,]*/
-    normal! 0
-  else
-    match
-  endif
-endfunction
-command! -nargs=1 Csv :call CSVH(<args>)
-
-" air-line
-let g:airline_powerline_fonts = 1
-
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-
-" airline symbols
-let g:airline_left_sep = ' 49/64'
-let g:airline_left_alt_sep = ' 25/32'
-let g:airline_right_sep = ' 51/64'
-let g:airline_right_alt_sep = ' 13/16'
-let g:airline_symbols.branch = ' 33/64'
-let g:airline_symbols.readonly = ' 35/64'
-let g:airline_symbols.linenr = ' 17/32'
-
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-
-" show trailing ws
-set listchars=tab:>-,trail:-
-set list
-
-filetype indent on " So you can do gg=G from normal mode
-
-set clipboard=unnamed
-set mouse=nicr
+set scrolloff=15
